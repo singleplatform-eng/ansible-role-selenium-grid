@@ -2,4 +2,5 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - ansible-role-selenium-grid
+    - geerlingguy.java
+    - role_under_test

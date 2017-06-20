@@ -1,23 +1,13 @@
 ---
-language: python
-python: "2.7"
 
+services: docker
 
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install default-jre
-
-install:
-  - pip install ansible
-  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
+env:
+  - distro: ubuntu1404
+    cleanup: false
+    port: '127.0.0.1:4444:4444'
 
 script:
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
-  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
-  - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
-    | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
+  - ${PWD}/tests/test.sh
   - curl localhost:4444 | grep -q grid && ( echo 'Grid listening on 4444' && exit 0)
   - curl localhost:4444/grid/api/proxy?id=http://localhost:5555 && ( echo 'Node listening on 5555' && exit 0)
