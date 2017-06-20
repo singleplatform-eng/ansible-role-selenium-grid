@@ -1,0 +1,89 @@
+#!/bin/bash
+
+DISPLAY="{{selenium_display}}"
+PIDFILE={{selenium_node_pid_file}}
+CONFIGFILE={{selenium_config_path}}/node.json
+LOGFILE={{selenium_log_path}}/node.log
+JARPATH={{selenium_jar_path}}
+JARVERSION={{selenium_version}}
+JAVA={{selenium_java_path}}
+APPUSER={{selenium_user}}
+
+start_app() {
+    if [ -f "$PIDFILE" ]; then
+      echo "Service is already running as process $(cat $PIDFILE)"
+      exit 0
+    fi
+      echo "Starting selenium node service"
+      start-stop-daemon --start --user $APPUSER --background --quiet --pidfile $PIDFILE --make-pidfile --chuid $APPUSER --exec /usr/bin/env DISPLAY=$DISPLAY $JAVA -- -jar "$JARPATH/selenium-server-standalone-$JARVERSION.jar" -role node -nodeConfig $CONFIGFILE -log $LOGFILE
+      sleep 1 
+      start-stop-daemon -T --pidfile $PIDFILE
+      return $?
+}
+
+stop_app() {
+    if [ -f $PIDFILE ]; then
+      echo "Stopping selenium node service process $(cat $PIDFILE)"
+      start-stop-daemon --stop --user $APPUSER --pidfile $PIDFILE --retry 5
+      status=$?
+    else 
+      echo "Selenium node service not running"
+      status=0
+    fi
+    return $status
+} 
+
+
+case "$1" in
+  start)
+    if [[ "$UID" -ne "0" ]]; then
+      echo "Must be run as root"
+      exit 1
+    fi
+    start_app
+    status=$?
+    if [[ "$status" -gt "0" ]]; then
+        echo "Service failed to start"
+        rm $PIDFILE
+        exit 1
+    fi
+    ;;
+  stop)
+    if [[ "$UID" -ne "0" ]]; then
+      echo "Must be run as root"
+      exit 1
+    fi
+    stop_app 
+    status=$?
+    if [ $status -eq 0 ]; then
+      rm $PIDFILE
+      echo "Service stopped successfully"
+    else
+      echo "Failed to stop process $(cat $PIDFILE)"
+      exit 1 
+    fi
+    ;;
+  restart)
+    stop_app
+    sleep 4
+    start_app
+    ;;
+  status)
+    if [ -f $PIDFILE ]; then
+      status=$(start-stop-daemon -T --pidfile $PIDFILE)
+      if [[ "$status" -eq "0" ]]; then
+        echo "Process is running at PID $(cat $PIDFILE)"
+      else
+        echo "PID File exists but no process is running. Please remove $PIDFILE and try starting again"
+        exit 1
+      fi
+    else
+      echo "Process is stopped"
+      exit 0
+    fi
+  ;;
+  *)
+    echo "Usage: start|stop|restart|status"
+  ;;
+esac
+exit 0
