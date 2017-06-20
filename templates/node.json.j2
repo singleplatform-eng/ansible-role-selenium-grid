@@ -1,0 +1,14 @@
+{
+  "configuration":
+  {
+    "proxy": "{{selenium_node_proxy}}",
+    "maxSession": {{selenium_node_max_session}},
+    "port": {{selenium_node_port}},
+    "host": "{{selenium_node_host}}",
+    "register": {% if selenium_node_register %}true{% else %}false{% endif %},
+    "registerCycle": {{selenium_node_register_cycle}},
+    "hubPort": {{selenium_node_hub_port}},
+    "hubHost": "{{selenium_node_hub_host}}"
+  },
+  "capabilities": {{ selenium_node_capabilities | to_json }}
+}

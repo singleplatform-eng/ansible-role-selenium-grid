@@ -1,0 +1,47 @@
+selenium_role: ''
+selenium_log_path: /var/log/selenium
+selenium_java_path: /usr/bin/java
+selenium_jar_path: /opt/selenium
+selenium_config_path: /etc/selenium
+selenium_hub_pid_file: /var/run/selenium-hub.pid
+selenium_node_pid_file: /var/run/selenium-node.pid
+selenium_version: 2.53.0
+selenium_display: ":99"
+
+selenium_jar_host: selenium-release.storage.googleapis.com
+selenium_jar_uri: "{{ selenium_version | regex_replace('\\.[0-9]+$', '') }}/selenium-server-standalone-{{ selenium_version }}.jar"
+selenium_mirror: "http://{{selenium_jar_host}}/{{selenium_jar_uri}}"
+
+
+selenium_user: selenium
+selenium_group: selenium
+
+selenium_manage_user: true
+selenium_manage_jar: true
+
+selenium_hub_enabled: true
+selenium_node_enabled: true
+
+selenium_node_proxy: org.openqa.grid.selenium.proxy.DefaultRemoteProxy
+selenium_node_max_session: 5
+selenium_node_port: 5555
+selenium_node_host: localhost
+selenium_node_register: true
+selenium_node_register_cycle: 5000
+selenium_node_hub_port: 4444
+selenium_node_hub_host: localhost
+
+selenium_hub_port: 4444
+selenium_hub_new_session_wait_timeout: -1
+selenium_hub_servlets: []
+selenium_hub_without_servlets: []
+selenium_hub_custom: {}
+selenium_hub_capability_matcher: "org.openqa.grid.internal.utils.DefaultCapabilityMatcher"
+selenium_hub_capability_throw: true
+selenium_hub_clean_up_cycle: 5000
+selenium_hub_debug: false
+selenium_hub_browser_timeout: 0
+selenium_hub_timeout: 1800
+
+
+selenium_node_capabilities: []

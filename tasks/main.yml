@@ -1,0 +1,103 @@
+---
+
+- name: Create Group
+  group:
+    name: "{{selenium_group}}"
+  when: selenium_manage_user
+
+- name: Create User
+  user:
+    name: "{{selenium_user}}"
+    comment: selenium service users
+    shell: "/sbin/nologin"
+  when: selenium_manage_user
+
+- name: Make app dir
+  file:
+    path: "{{selenium_jar_path}}"
+    state: directory
+    group: root
+    owner: root
+    mode: 0755
+  when: selenium_manage_jar 
+
+- name: Make config dir
+  file:
+    path: "{{selenium_config_path}}"
+    state: directory
+    group: root
+    owner: root
+    mode: 0755
+
+- name: Make log dir
+  file:
+    path: "{{selenium_log_path}}"
+    state: directory
+    group: "{{selenium_group}}"
+    owner: "{{selenium_user}}"
+    mode: 0750
+
+- name: Install Jar
+  get_url:
+    url: "{{selenium_mirror}}"
+    dest: "{{selenium_jar_path}}/selenium-server-standalone-{{selenium_version}}.jar"
+    owner: root
+    group: root
+    mode: 0644
+  when: selenium_manage_jar
+
+- name: Create Hub config file
+  template:
+    dest: "{{selenium_config_path}}/hub.json"
+    src: hub.json.j2
+    owner: root
+    group: root
+    mode: 0644
+  when: selenium_hub_enabled
+  notify:
+    - restart selenium-hub
+
+- name: Create Hub service
+  template:
+    dest: /etc/init.d/selenium-hub
+    src: selenium-hub.bash.j2
+    owner: root
+    group: root
+    mode: 0755
+  when: selenium_hub_enabled
+  notify:
+    - restart selenium-hub
+
+- name: Hub Service
+  service:
+    name: selenium-hub
+    state: started
+  when: selenium_hub_enabled
+
+- name: Create node config file
+  template:
+    dest: "{{selenium_config_path}}/node.json"
+    src: node.json.j2
+    owner: root
+    group: root
+    mode: 0644
+  when: selenium_node_enabled
+  notify:
+    - restart selenium-node
+
+- name: Create node service
+  template:
+    dest: /etc/init.d/selenium-node
+    src: selenium-node.bash.j2
+    owner: root
+    group: root
+    mode: 0755
+  when: selenium_node_enabled
+  notify:
+    - restart selenium-node
+
+- name: node Service
+  service:
+    name: selenium-node
+    state: started
+  when: selenium_node_enabled
