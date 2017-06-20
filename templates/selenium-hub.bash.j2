@@ -1,13 +1,13 @@
 #!/bin/bash
 
-DISPLAY="{{selenium_display}}"
-PIDFILE={{selenium_hub_pid_file}}
-CONFIGFILE={{selenium_config_path}}/hub.json
-LOGFILE={{selenium_log_path}}/hub.log
-JARPATH={{selenium_jar_path}}
-JARVERSION={{selenium_version}}
-JAVA={{selenium_java_path}}
-APPUSER={{selenium_user}}
+DISPLAY=":99"
+PIDFILE=/var/run/selenium-hub.pid
+CONFIGFILE=/etc/selenium/hub.json
+LOGFILE=/var/log/selenium/hub.log
+JARPATH=/opt/selenium
+JARVERSION=2.53.0
+JAVA=/usr/bin/java
+APPUSER=selenium
 
 start_app() {
     if [ -f "$PIDFILE" ]; then
@@ -65,8 +65,22 @@ case "$1" in
     ;;
   restart)
     stop_app
-    sleep 4
+    status=$?
+    if [ $status -eq 0 ]; then
+      rm $PIDFILE
+      echo "Service stopped successfully"
+    else
+      echo "Failed to stop process $(cat $PIDFILE)"
+      exit 1 
+    fi
+    sleep 1
     start_app
+    status=$?
+    if [[ "$status" -gt "0" ]]; then
+        echo "Service failed to start"
+        rm $PIDFILE
+        exit 1
+    fi
     ;;
   status)
     if [ -f $PIDFILE ]; then
