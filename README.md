@@ -1,7 +1,19 @@
-# ansible-role-selenium
-[![Build Status](https://travis-ci.org/singleplatform-eng/ansible-role-selenium.svg?branch=master)](https://travis-ci.org/singleplatform-eng/ansible-role-selenium)
+# ansible-role-selenium-grid
+[![Build Status](https://travis-ci.org/singleplatform-eng/ansible-role-selenium-grid.svg?branch=master)](https://travis-ci.org/singleplatform-eng/ansible-role-selenium-grid)
 
 Role to install and manage Selenium Grid Hubs and Nodes. This role does not manage java installation or browser configuration. 
+# Requirements
+* java
+* desired browsers
+* X server or a virtual X frame buffer
+
+Selenium requires java but instead of making a dependency on another ansible role, this role opts to simply take a path to the java runtime you want to use. [geerlingguy.java][ag1] is an easy to use option.
+Note: Selenium grid 3+ requires Java 8.
+
+This role also leaves the management of browsers and their drivers to other roles. There are roles available for Chrome, Chromedriver, and Firefox available on ansible galaxy. 
+
+If not running a headless browser, you will need to manage displays outside of this role. [pablerass.xvfb][ag2] is a simple role for running Xvfb.
+
 
 # Role Variables
 By default the role will add a hub and node on the target host listening publicly on the default ports and no browsers configured. 
@@ -55,3 +67,4 @@ See the [selenium grid wiki for hub json configuration][wn2].
 
    [wn1]: <https://github.com/SeleniumHQ/selenium/blob/selenium-2.53.0/java/server/src/org/openqa/grid/common/defaults/DefaultNode.json>
    [wn2]: <https://github.com/SeleniumHQ/selenium/blob/selenium-2.53.0/java/server/src/org/openqa/grid/common/defaults/DefaultHub.json>
+   [ag1]: <https://galaxy.ansible.com/geerlingguy/java/>
