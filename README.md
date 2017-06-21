@@ -68,3 +68,4 @@ See the [selenium grid wiki for hub json configuration][wn2].
    [wn1]: <https://github.com/SeleniumHQ/selenium/blob/selenium-2.53.0/java/server/src/org/openqa/grid/common/defaults/DefaultNode.json>
    [wn2]: <https://github.com/SeleniumHQ/selenium/blob/selenium-2.53.0/java/server/src/org/openqa/grid/common/defaults/DefaultHub.json>
    [ag1]: <https://galaxy.ansible.com/geerlingguy/java/>
+   [ag2]: <https://galaxy.ansible.com/pablerass/xvfb/>
