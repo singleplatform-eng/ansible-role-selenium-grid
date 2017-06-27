@@ -72,6 +72,7 @@
   service:
     name: selenium-hub
     state: started
+    enabled: yes
   when: selenium_hub_enabled
 
 - name: Create node config file
@@ -100,4 +101,5 @@
   service:
     name: selenium-node
     state: started
+    enabled: yes
   when: selenium_node_enabled
