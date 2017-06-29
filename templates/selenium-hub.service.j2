@@ -1,0 +1,9 @@
+[Unit]
+Description=Selenium Hub Service
+After=network.target
+
+[Service]
+ExecStart={{selenium_java_path}} -jar {{selenium_jar_path}}/selenium-server-standalone-{{selenium_version}}.jar -role hub -hubConfig {{selenium_config_path}}/hub.json -log {{selenium_log_path}}/hub.log
+
+[Install]
+WantedBy=multi-user.target

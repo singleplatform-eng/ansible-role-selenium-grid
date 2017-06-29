@@ -1,0 +1,34 @@
+
+- name: Create Hub service
+  template:
+    dest: /etc/systemd/system/selenium-hub.service
+    src: selenium-hub.service.j2
+    owner: root
+    group: root
+    mode: 0755
+  when: selenium_hub_enabled
+  notify:
+    - restart selenium-hub-service
+
+- name: Hub Service
+  service:
+    name: selenium-hub
+    state: started
+  when: selenium_hub_enabled
+
+- name: Create node service
+  template:
+    dest: /etc/systemd/system/selenium-node.service
+    src: selenium-node.service.j2
+    owner: root
+    group: root
+    mode: 0755
+  when: selenium_node_enabled
+  notify:
+    - restart selenium-node-service
+
+- name: node Service
+  service:
+    name: selenium-node
+    state: started
+  when: selenium_node_enabled

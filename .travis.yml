@@ -1,5 +1,6 @@
 ---
 
+language: python
 services: docker
 
 env:
@@ -9,5 +10,5 @@ env:
 
 script:
   - ${PWD}/tests/test.sh
-  - curl localhost:4444 | grep -q grid && ( echo 'Grid listening on 4444' && exit 0)
-  - curl localhost:4444/grid/api/proxy?id=http://localhost:5555 && ( echo 'Node listening on 5555' && exit 0)
+  - pip install selenium
+  - python ${PWD}/tests/test.py

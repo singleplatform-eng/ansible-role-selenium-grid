@@ -1,13 +1,13 @@
 #!/bin/bash
 
-DISPLAY=":99"
-PIDFILE=/var/run/selenium-node.pid
-CONFIGFILE=/etc/selenium/node.json
-LOGFILE=/var/log/selenium/node.log
-JARPATH=/opt/selenium
-JARVERSION=2.53.0
-JAVA=/usr/bin/java
-APPUSER=selenium
+DISPLAY="{{selenium_display}}"
+PIDFILE={{selenium_node_pid_file}}
+CONFIGFILE={{selenium_config_path}}/node.json
+LOGFILE={{selenium_log_path}}/node.log
+JARPATH={{selenium_jar_path}}
+JARVERSION={{selenium_version}}
+JAVA={{selenium_java_path}}
+APPUSER={{selenium_user}}
 
 start_app() {
     if [ -f "$PIDFILE" ]; then
