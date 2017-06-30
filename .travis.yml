@@ -1,14 +1,16 @@
 ---
 
-language: python
 services: docker
 
 env:
   - distro: ubuntu1404
     cleanup: false
     port: '127.0.0.1:4444:4444'
+  - distro: ubuntu1604
+    cleanup: false
+    port: '127.0.0.1:4444:4444'
 
 script:
   - ${PWD}/tests/test.sh
-  - pip install selenium
-  - python ${PWD}/tests/test.py
+  - curl localhost:4444 | grep -q grid && ( echo 'Grid listening on 4444' && exit 0)
+  - curl localhost:4444/grid/api/proxy?id=http://localhost:5555 && ( echo 'Node listening on 5555' && exit 0)
