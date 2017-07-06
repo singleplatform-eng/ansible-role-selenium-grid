@@ -1,0 +1,11 @@
+[Unit]
+Description=Selenium Node Service
+After=network.target
+
+[Service]
+Environment=DISPLAY={{selenium_display}}
+User={{selenium_user}}
+ExecStart={{selenium_java_path}} -jar {{selenium_jar_path}}/selenium-server-standalone-{{selenium_version}}.jar -role node -nodeConfig {{selenium_config_path}}/node.json -log {{selenium_log_path}}/node.log
+
+[Install]
+WantedBy=multi-user.target

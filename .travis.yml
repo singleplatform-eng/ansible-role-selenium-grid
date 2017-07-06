@@ -6,6 +6,9 @@ env:
   - distro: ubuntu1404
     cleanup: false
     port: '127.0.0.1:4444:4444'
+  - distro: ubuntu1604
+    cleanup: false
+    port: '127.0.0.1:4444:4444'
 
 script:
   - ${PWD}/tests/test.sh

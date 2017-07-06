@@ -5,7 +5,19 @@
     name: selenium-hub
     state: restarted
 
+- name: restart selenium-hub-service
+  systemd:
+    name: selenium-hub
+    state: restarted
+    daemon-reload: yes
+
 - name: restart selenium-node
   service:
     name: selenium-node
     state: restarted
+
+- name: restart selenium-node-service
+  systemd:
+    name: selenium-node
+    state: restarted
+    daemon-reload: yes
