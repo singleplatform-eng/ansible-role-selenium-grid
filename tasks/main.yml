@@ -69,9 +69,9 @@
     - restart selenium-node
 
 - name: install SystemD Units
-  include: systemd.yml
+  include_tasks: systemd.yml
   when: ansible_service_mgr == "systemd"
 
 - name: install systemV init scripts
-  include: systemv.yml
+  include_tasks: systemv.yml
   when: ansible_service_mgr != "systemd"
