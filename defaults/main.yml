@@ -7,6 +7,7 @@ selenium_hub_pid_file: /var/run/selenium-hub.pid
 selenium_node_pid_file: /var/run/selenium-node.pid
 selenium_version: 2.53.0
 selenium_display: ":99"
+selenium_path: "${PATH}"
 
 selenium_jar_host: selenium-release.storage.googleapis.com
 selenium_jar_uri: "{{ selenium_version | regex_replace('\\.[0-9]+$', '') }}/selenium-server-standalone-{{ selenium_version }}.jar"
