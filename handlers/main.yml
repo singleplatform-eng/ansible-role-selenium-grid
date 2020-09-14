@@ -4,20 +4,24 @@
   service:
     name: selenium-hub
     state: restarted
+  listen: "restart application"
 
 - name: restart selenium-hub-service
   systemd:
     name: selenium-hub
     state: restarted
     daemon-reload: yes
+  listen: "restart application"
 
 - name: restart selenium-node
   service:
     name: selenium-node
     state: restarted
+  listen: "restart application"
 
 - name: restart selenium-node-service
   systemd:
     name: selenium-node
     state: restarted
     daemon-reload: yes
+  listen: "restart application"
